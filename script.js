@@ -63,7 +63,43 @@ function validateEmail(value) {
 }
 
 function validatePassword(value) {
-  return value.length >= passwordMinLength;
+  const errors = [];
+
+  if (value.length < 8) {
+    errors.push("at least 8 characters");
+  }
+
+  if (!/[A-Z]/.test(value)) {
+    errors.push("one uppercase letter");
+  }
+
+  if (!/[a-z]/.test(value)) {
+    errors.push("one lowercase letter");
+  }
+
+  if (!/[0-9]/.test(value)) {
+    errors.push("one number");
+  }
+
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+    errors.push("one special character");
+  }
+
+  if (/\s/.test(value)) {
+    errors.push("no spaces allowed");
+  }
+
+  const commonPasswords = ["12345678", "password", "qwerty123"];
+  if (commonPasswords.includes(value.toLowerCase())) {
+    errors.push("password is too common");
+  }
+
+  return {
+    isValid: errors.length === 0,
+    message: errors.length
+      ? `Password must contain: ${errors.join(", ")}.`
+      : ""
+  };
 }
 
 function validateForm() {
@@ -94,12 +130,13 @@ function validateForm() {
 
   if (!validateRequired(fields.password, password)) {
     isValid = false;
-  } else if (!validatePassword(password)) {
-    setFieldError(
-      fields.password,
-      `Password must be at least ${passwordMinLength} characters long.`
-    );
-    isValid = false;
+  } else {
+    const passwordValidation = validatePassword(password);
+  
+    if (!passwordValidation.isValid) {
+      setFieldError(fields.password, passwordValidation.message);
+      isValid = false;
+    }
   }
 
   return isValid;
