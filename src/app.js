@@ -3,9 +3,12 @@ const express = require("express");
 const usersRoutes = require("./routes/usersRoutes");
 const profilesRoutes = require("./routes/profilesRoutes");
 const scoresRoutes = require("./routes/scoresRoutes");
+const cors = require("cors");
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
+
+app.use(cors());
 
 app.use(express.json());
 

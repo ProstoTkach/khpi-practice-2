@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User List | UserFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="../js/main.js"></script>
+  </head>
+  <body data-page="users">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html">UserFlow</a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="index.html">Welcome</a>
+          <a href="user-manager.html">User Manager</a>
+          <a href="users.html" class="active">User list</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <section class="card">
+          <h1>Users</h1>
+          <div class="toolbar">
+            <input
+              id="searchInput"
+              class="toolbar-input"
+              type="search"
+              placeholder="Search by name or email"
+              aria-label="Search users"
+            />
+            <select id="sortSelect" class="toolbar-select" aria-label="Sort users">
+              <option value="id-asc">ID: ascending</option>
+              <option value="id-desc">ID: descending</option>
+              <option value="name-asc">Name: A-Z</option>
+              <option value="name-desc">Name: Z-A</option>
+              <option value="email-asc">Email: A-Z</option>
+            </select>
+            <button id="reloadUsersBtn" class="btn ghost" type="button">Reload</button>
+          </div>
+
+          <div id="usersLoading" class="loading-state">Loading users...</div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Scores</th>
+                  <th>Avg(5)</th>
+                  <th>Email</th>
+                  <th>Created at</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+        <p id="globalMessage" class="status-message" role="status" aria-live="polite"></p>
+      </main>
+    </div>
+  </body>
+</html>
