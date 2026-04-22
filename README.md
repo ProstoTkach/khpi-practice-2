@@ -1,228 +1,168 @@
-# Registration Backend (Node.js + Express + PostgreSQL)
+# UserFlow (Frontend + Backend)
 
-Production-ready backend API for user registration with CRUD operations, validation, and password hashing.
-Also includes ORM-based CRUD for profiles and scores.
+Vanilla JS dashboard + Node.js/Express REST API with PostgreSQL storage.
 
-## Tech Stack
+- **Frontend**: `frontend/` (static HTML/CSS/JS)
+- **Backend**: `backend/` (Express + `pg` + Sequelize, Jest/Supertest tests)
 
-- Node.js
-- Express
-- PostgreSQL (`pg`)
-- Sequelize ORM (for `profiles` and `scores`)
-- `bcrypt` for password hashing
-- `dotenv` for environment variables
+## Project structure
 
-## Project Structure
+```text
+frontend/
+  pages/                 # HTML pages
+  js/                    # ES modules (Fetch API client)
+  public/                # static assets (default avatar)
 
-```
-src/
-  app.js
-  controllers/
-    usersController.js
-    profilesController.js
-    scoresController.js
-  routes/
-    usersRoutes.js
-    profilesRoutes.js
-    scoresRoutes.js
-  services/
-    usersService.js
-    profilesService.js
-    scoresService.js
-  db/
-    pool.js
-    sequelize.js
-    schema.sql
-  models/
-    profile.js
-    score.js
+backend/
+  src/
+    app.js               # Express app (+ /health)
+    routes/              # users/profiles/scores routes
+    controllers/         # validation + request handling
+    services/            # DB operations
+    db/                  # pg pool + Sequelize + schema.sql
+    models/              # Sequelize models & associations
+    utils/               # sanitize helper
+  tests/
+    api.test.js          # integration API tests
+  package.json
+  .env                   # local env vars
 ```
 
-## 1) Install Dependencies
+## Features
 
-```bash
-npm install
-```
+- **CRUD**: users, profiles, scores
+- **Validation**: email format, password >= 8, score 0..100, numeric ids
+- **Security**:
+  - parameterized SQL (SQLi-resistant)
+  - bcrypt password hashing
+  - basic anti-XSS sanitization for stored text fields
+- **Tests**: Jest + Supertest integration suite (GitHub Actions included)
 
-## 2) Configure Environment
+## Backend API
 
-1. Copy `.env.example` to `.env`
-2. Update values for your local PostgreSQL setup
+Base URL (local): `http://localhost:3000`
 
-Example:
-
-```
-PORT=3000
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=postgres
-DB_NAME=registration_app
-```
-
-## 3) Create Database and Schema
-
-Create the database in PostgreSQL:
-
-```sql
-CREATE DATABASE registration_app;
-```
-
-Then run `src/db/schema.sql` in that database:
-
-```sql
-CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
-  first_name VARCHAR(100) NOT NULL,
-  last_name VARCHAR(100) NOT NULL,
-  email VARCHAR(255) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-## 4) Run Server
-
-Development mode:
-
-```bash
-npm run dev
-```
-
-Production mode:
-
-```bash
-npm start
-```
-
-Server URL:
-
-`http://localhost:3000`
-
-## 5) Run Tests (Jest + Supertest)
-
-Tests are integration-style API tests in `tests/api.test.js`.
-
-1. Create a separate test database:
-
-```sql
-CREATE DATABASE registration_app_test;
-```
-
-2. Apply schema to test DB:
-
-```bash
-psql "postgresql://postgres:postgres@localhost:5432/registration_app_test" -f src/db/schema.sql
-```
-
-3. Set environment variables for tests (example):
-
-```bash
-set DB_HOST=localhost
-set DB_PORT=5432
-set DB_NAME=registration_app_test
-set DB_USER=postgres
-set DB_PASSWORD=postgres
-set NODE_ENV=test
-```
-
-4. Run tests:
-
-```bash
-npm test
-```
-
-## API Endpoints
-
-### Users (`pg` SQL layer)
-
-### Create user
-
+- `GET /health`
 - `POST /users`
-- Body:
-
-```json
-{
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "john.doe@example.com",
-  "password": "secret123"
-}
-```
-
-### Get all users
-
 - `GET /users`
-
-### Get one user
-
 - `GET /users/:id`
-
-### Update user
-
 - `PUT /users/:id`
-- Body can include one or more fields:
-
-```json
-{
-  "firstName": "Jane",
-  "email": "jane@example.com",
-  "password": "newpassword123"
-}
-```
-
-### Delete user
-
 - `DELETE /users/:id`
-
-### Profiles (`Sequelize ORM`)
-
+- `GET /users-with-five-scores`
+- `GET /users-max-score`
 - `POST /profiles`
 - `GET /profiles`
 - `GET /profiles/:id`
 - `PUT /profiles/:id`
 - `DELETE /profiles/:id`
-
-Create profile body example:
-
-```json
-{
-  "user_id": 1,
-  "bio": "Backend engineer",
-  "avatar_url": "https://example.com/avatar.png"
-}
-```
-
-### Scores (`Sequelize ORM`)
-
 - `POST /scores`
 - `GET /scores`
 - `GET /scores/:id`
 - `PUT /scores/:id`
 - `DELETE /scores/:id`
 
-Create score body example:
+## Local development
 
-```json
-{
-  "user_id": 1,
-  "score": 95
-}
+### 1) Database (local PostgreSQL)
+
+Create DB and apply schema:
+
+```sql
+CREATE DATABASE registration_app;
 ```
 
-## Validation Rules
+```bash
+psql -d registration_app -f backend/src/db/schema.sql
+```
 
-- `firstName`, `lastName`, `email`, `password` required for `POST /users`
-- Email must match valid format
-- Password must be at least 8 characters
-- `PUT /users/:id` requires at least one updatable field
-- `profiles`: `user_id` is required for create and must be integer
-- `scores`: `user_id` and `score` are required for create; score range `0..100`
+### 2) Backend
 
-## Notes
+Create `backend/.env` (example):
 
-- Passwords are hashed using bcrypt before storing in database
-- API does not return hashed password in responses
-- Duplicate unique values return `409 Conflict`
-- Route parameters use strict numeric validation (`/^\d+$/`) to prevent injection-like input
-- Input text fields are sanitized before saving to reduce stored-XSS risk
+```env
+PORT=3000
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=registration_app
+
+# tests
+DB_NAME_TEST=tests_db
+```
+
+Run:
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+### 3) Frontend
+
+Open `frontend/pages/index.html` in browser (or serve `frontend/` as static).
+
+Frontend reads API base from `frontend/js/config.js`:
+
+- `window.__API_BASE_URL__` (preferred for hosting)
+- fallback: `http://localhost:3000`
+
+## Tests
+
+```bash
+cd backend
+npm test
+```
+
+Safety rules:
+
+- Tests refuse to run on DB name without `"test"` in it.
+- Cleanup removes **only test-created rows** (by email prefix).
+- If test DB is empty, tests auto-create tables (minimal schema).
+
+## Hosting (simple)
+
+### Where to host PostgreSQL
+
+Any managed Postgres works. The simplest options:
+
+- **Render PostgreSQL**: easiest if your backend is on Render (same provider, easy env vars).
+- **Railway PostgreSQL**: easy UI, quick start; good for student projects.
+- **Neon / Supabase**: standalone managed Postgres; you just take connection params.
+
+Pick the same region as your backend to reduce latency.
+
+### Deploy backend (Render/Railway)
+
+1. Create a Web Service from this repo.
+2. Set **root directory** to `backend`.
+3. Start command: `npm start`
+4. Set environment variables:
+   - `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`
+   - `NODE_ENV=production`
+5. Apply schema once to the hosted DB using `backend/src/db/schema.sql`.
+
+Verify: open `GET /health` on your deployed backend.
+
+### Deploy frontend (Netlify/Vercel/GitHub Pages)
+
+Host `frontend/` as static.
+
+Before `<script type="module" src="../js/main.js"></script>` on each page, inject:
+
+```html
+<script>
+  window.__API_BASE_URL__ = "https://YOUR-BACKEND-DOMAIN";
+</script>
+```
+
+Redeploy frontend.
+
+## Next steps checklist
+
+- Deploy PostgreSQL
+- Deploy backend, check `/health`
+- Apply schema to hosted DB
+- Deploy frontend with `window.__API_BASE_URL__`
+- Confirm CRUD + scores flows in UI
