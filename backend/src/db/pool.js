@@ -6,11 +6,14 @@ const databaseName = isTestEnv
   : process.env.DB_NAME || "registration_app";
 
 const pool = new Pool({
-  host: process.env.DB_HOST || "localhost",
+  host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT || 5432),
-  user: process.env.DB_USER || "postgres",
-  password: process.env.DB_PASSWORD || "postgres",
-  database: databaseName
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: databaseName,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 module.exports = pool;
