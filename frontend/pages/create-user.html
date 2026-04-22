@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create User | UserFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body data-page="create-user">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html">UserFlow</a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="index.html">Welcome</a>
+          <a href="create-user.html" class="active">Create user</a>
+          <a href="users.html">User list</a>
+          <a href="profile.html">Profile & scores</a>
+          <a href="edit-profile.html">Edit profile</a>
+          <a href="delete-user.html">Delete user</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <section class="card form-card">
+          <h1>Create new user</h1>
+          <p class="muted">Submit user data to `POST /users`.</p>
+
+          <form id="createUserForm" class="form-grid" novalidate>
+            <label for="firstName">First name</label>
+            <input id="firstName" name="firstName" type="text" required />
+            <small class="field-error" id="firstNameError"></small>
+
+            <label for="lastName">Last name</label>
+            <input id="lastName" name="lastName" type="text" required />
+            <small class="field-error" id="lastNameError"></small>
+
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required />
+            <small class="field-error" id="emailError"></small>
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" minlength="8" required />
+            <small class="field-error" id="passwordError"></small>
+
+            <button type="submit" class="btn primary">Create user</button>
+          </form>
+        </section>
+        <p id="globalMessage" class="status-message" role="status" aria-live="polite"></p>
+      </main>
+    </div>
+  </body>
+</html>
