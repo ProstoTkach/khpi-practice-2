@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile & Scores | UserFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body data-page="profile">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html">UserFlow</a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="index.html">Welcome</a>
+          <a href="create-user.html">Create user</a>
+          <a href="users.html">User list</a>
+          <a href="profile.html" class="active">Profile & scores</a>
+          <a href="edit-profile.html">Edit profile</a>
+          <a href="delete-user.html">Delete user</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <section class="card">
+          <h1>Profile and scores</h1>
+          <div class="toolbar">
+            <input
+              id="profileUserIdInput"
+              class="toolbar-input"
+              type="number"
+              min="1"
+              placeholder="Enter user id"
+              aria-label="User ID"
+            />
+            <button id="loadProfileBtn" class="btn primary" type="button">Load</button>
+          </div>
+        </section>
+
+        <section class="card" id="userCard">
+          <h2>User</h2>
+          <div id="userInfo" class="muted">No user selected.</div>
+        </section>
+
+        <section class="card" id="profileCard">
+          <h2>Profile</h2>
+          <div id="profileInfo" class="muted">No profile data.</div>
+        </section>
+
+        <section class="card">
+          <h2>Scores</h2>
+          <form id="addScoreForm" class="toolbar compact-toolbar">
+            <input id="newScoreInput" class="toolbar-input" type="number" min="0" max="100" placeholder="0-100" />
+            <button class="btn ghost" type="submit">Add score</button>
+          </form>
+          <ul id="scoresList" class="score-list"></ul>
+        </section>
+
+        <p id="globalMessage" class="status-message" role="status" aria-live="polite"></p>
+      </main>
+    </div>
+  </body>
+</html>
