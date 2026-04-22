@@ -1,8 +1,11 @@
 const scoresService = require("../services/scoresService");
 
 function parseId(idParam) {
-  const id = Number.parseInt(idParam, 10);
-  return Number.isNaN(id) ? null : id;
+  if (!/^\d+$/.test(idParam)) {
+    return null;
+  }
+  const id = Number(idParam);
+  return Number.isInteger(id) ? id : null;
 }
 
 function validateCreatePayload(body) {

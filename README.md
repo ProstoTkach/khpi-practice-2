@@ -99,6 +99,39 @@ Server URL:
 
 `http://localhost:3000`
 
+## 5) Run Tests (Jest + Supertest)
+
+Tests are integration-style API tests in `tests/api.test.js`.
+
+1. Create a separate test database:
+
+```sql
+CREATE DATABASE registration_app_test;
+```
+
+2. Apply schema to test DB:
+
+```bash
+psql "postgresql://postgres:postgres@localhost:5432/registration_app_test" -f src/db/schema.sql
+```
+
+3. Set environment variables for tests (example):
+
+```bash
+set DB_HOST=localhost
+set DB_PORT=5432
+set DB_NAME=registration_app_test
+set DB_USER=postgres
+set DB_PASSWORD=postgres
+set NODE_ENV=test
+```
+
+4. Run tests:
+
+```bash
+npm test
+```
+
 ## API Endpoints
 
 ### Users (`pg` SQL layer)
@@ -191,3 +224,5 @@ Create score body example:
 - Passwords are hashed using bcrypt before storing in database
 - API does not return hashed password in responses
 - Duplicate unique values return `409 Conflict`
+- Route parameters use strict numeric validation (`/^\d+$/`) to prevent injection-like input
+- Input text fields are sanitized before saving to reduce stored-XSS risk
