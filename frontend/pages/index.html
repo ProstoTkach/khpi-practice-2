@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Modern user management dashboard for users, profiles, and scores."
+    />
+    <title>Dashboard | UserFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="../js/main.js"></script>
+  </head>
+  <body data-page="welcome">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html">UserFlow</a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="index.html" class="active">Welcome</a>
+          <a href="user-manager.html">User Manager</a>
+          <a href="users.html">User list</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <section class="hero card">
+          <p class="eyebrow">SaaS Admin Panel</p>
+          <h1>Manage users, profiles, and scores in one place</h1>
+          <p class="muted">
+            Fast, responsive, and connected to your REST API. Start by managing users or
+            browse the full user table.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="user-manager.html">Open User Manager</a>
+            <a class="btn ghost" href="users.html">Open user list</a>
+          </div>
+        </section>
+
+        <section class="stats-grid" id="welcomeStats" aria-live="polite">
+          <article class="card stat-card">
+            <h2>Total users</h2>
+            <p id="totalUsers" class="stat-value">-</p>
+          </article>
+          <article class="card stat-card">
+            <h2>Profiles</h2>
+            <p id="totalProfiles" class="stat-value">-</p>
+          </article>
+          <article class="card stat-card">
+            <h2>Scores</h2>
+            <p id="totalScores" class="stat-value">-</p>
+          </article>
+          <article class="card stat-card">
+            <h2>Overall avg score</h2>
+            <p id="overallAvgScore" class="stat-value">-</p>
+          </article>
+          <article class="card stat-card">
+            <h2>Users with 5 scores</h2>
+            <p id="usersWithFiveScores" class="stat-value">-</p>
+          </article>
+          <article class="card stat-card">
+            <h2>Best avg (5 scores)</h2>
+            <p id="bestUserByAvg" class="stat-value stat-text">-</p>
+          </article>
+        </section>
+
+        <p id="globalMessage" class="status-message" role="status" aria-live="polite"></p>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Manager | UserFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="../js/main.js"></script>
+  </head>
+  <body data-page="user-manager">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html">UserFlow</a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="index.html">Welcome</a>
+          <a href="user-manager.html" class="active">User Manager</a>
+          <a href="users.html">User list</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <section class="card" id="managerDashboard">
+          <h1>User Manager</h1>
+          <p class="muted">Create, edit, and delete users or profiles from one panel.</p>
+
+          <div class="manager-grid">
+            <div class="manager-section">
+              <h2>Create</h2>
+              <div class="button-row">
+                <button class="btn primary" id="showCreateUserFormBtn" type="button">Create user</button>
+                <button class="btn ghost" id="showCreateProfileFormBtn" type="button">Add profile</button>
+              </div>
+            </div>
+
+            <div class="manager-section">
+              <h2>Update by User ID</h2>
+              <form class="inline-form" id="updateByUserIdForm" autocomplete="on">
+                <input id="updateUserIdInput" type="number" min="1" placeholder="User ID" required />
+                <button class="btn ghost" id="editUserBtn" type="button">Edit user</button>
+                <button class="btn ghost" id="editProfileBtn" type="button">Edit profile</button>
+              </form>
+            </div>
+
+            <div class="manager-section">
+              <h2>Delete by User ID</h2>
+              <form class="inline-form" id="deleteByUserIdForm" autocomplete="on">
+                <input id="deleteUserIdInput" type="number" min="1" placeholder="User ID" required />
+                <button class="btn danger" id="deleteUserFlowBtn" type="button">Delete user</button>
+                <button class="btn danger" id="deleteProfileFlowBtn" type="button">Delete profile</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section class="card hidden" id="createUserSection">
+          <h2>Create user</h2>
+          <form id="createUserForm" class="form-grid" autocomplete="on">
+            <label for="createFirstName">First name</label>
+            <input id="createFirstName" name="given-name" type="text" autocomplete="given-name" required />
+            <small class="field-error" id="createFirstNameError"></small>
+
+            <label for="createLastName">Last name</label>
+            <input id="createLastName" name="family-name" type="text" autocomplete="family-name" required />
+            <small class="field-error" id="createLastNameError"></small>
+
+            <label for="createEmail">Email</label>
+            <input id="createEmail" name="email" type="email" autocomplete="email" required />
+            <small class="field-error" id="createEmailError"></small>
+
+            <label for="createPassword">Password</label>
+            <input id="createPassword" name="new-password" type="password" autocomplete="new-password" required />
+            <small class="field-error" id="createPasswordError"></small>
+
+            <div class="button-row">
+              <button class="btn primary" type="submit">Save user</button>
+              <button class="btn ghost cancel-btn" type="button">Cancel</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card hidden" id="createProfileSection">
+          <h2>Create profile</h2>
+          <form id="createProfileForm" class="form-grid" autocomplete="on">
+            <label for="createProfileUserId">User ID</label>
+            <input id="createProfileUserId" type="number" min="1" required />
+            <small class="field-error" id="createProfileUserIdError"></small>
+
+            <label for="createProfileBio">Bio</label>
+            <textarea id="createProfileBio" rows="4"></textarea>
+            <small class="field-error" id="createProfileBioError"></small>
+
+            <label for="createProfileAvatar">Avatar URL</label>
+            <input id="createProfileAvatar" type="url" />
+            <small class="field-error" id="createProfileAvatarError"></small>
+
+            <div class="button-row">
+              <button class="btn primary" type="submit">Save profile</button>
+              <button class="btn ghost cancel-btn" type="button">Cancel</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card hidden" id="editUserSection">
+          <h2>Edit user</h2>
+          <form id="editUserForm" class="form-grid" autocomplete="on">
+            <input id="editUserId" type="hidden" />
+            <label for="editFirstName">First name</label>
+            <input id="editFirstName" name="given-name" type="text" autocomplete="given-name" required />
+            <small class="field-error" id="editFirstNameError"></small>
+            <label for="editLastName">Last name</label>
+            <input id="editLastName" name="family-name" type="text" autocomplete="family-name" required />
+            <small class="field-error" id="editLastNameError"></small>
+            <label for="editEmail">Email</label>
+            <input id="editEmail" name="email" type="email" autocomplete="email" required />
+            <small class="field-error" id="editEmailError"></small>
+            <label for="editPassword">Password (optional)</label>
+            <input id="editPassword" name="new-password" type="password" autocomplete="new-password" />
+            <small class="field-error" id="editPasswordError"></small>
+            <div class="button-row">
+              <button class="btn primary" type="submit">Save changes</button>
+              <button class="btn ghost cancel-btn" type="button">Cancel</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card hidden" id="editProfileSection">
+          <h2>Edit profile</h2>
+          <form id="editProfileForm" class="form-grid" autocomplete="on">
+            <input id="editProfileId" type="hidden" />
+            <label for="editProfileUserId">User ID</label>
+            <input id="editProfileUserId" type="number" min="1" required />
+            <small class="field-error" id="editProfileUserIdError"></small>
+            <label for="editProfileBio">Bio</label>
+            <textarea id="editProfileBio" rows="4"></textarea>
+            <small class="field-error" id="editProfileBioError"></small>
+            <label for="editProfileAvatar">Avatar URL</label>
+            <div class="inline-form">
+              <input id="editProfileAvatar" type="url" />
+              <button class="btn ghost" id="reloadAvatarPreviewBtn" type="button">Reload</button>
+            </div>
+            <small class="field-error" id="editProfileAvatarError"></small>
+            <div class="avatar-preview-wrap">
+              <img id="editProfileAvatarPreview" class="avatar-image" src="" alt="Profile avatar preview" />
+            </div>
+            <div class="button-row">
+              <button class="btn primary" type="submit">Save changes</button>
+              <button class="btn ghost cancel-btn" type="button">Cancel</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card hidden" id="deleteUserSection">
+          <h2>Delete user</h2>
+          <div id="deleteUserInfo" class="muted"></div>
+          <div class="button-row">
+            <button class="btn danger" id="confirmDeleteUserBtn" type="button">Delete user</button>
+            <button class="btn ghost cancel-btn" type="button">Cancel</button>
+          </div>
+        </section>
+
+        <section class="card hidden" id="deleteProfileSection">
+          <h2>Delete profile</h2>
+          <div id="deleteProfileInfo" class="muted"></div>
+          <div class="button-row">
+            <button class="btn danger" id="confirmDeleteProfileBtn" type="button">Delete profile</button>
+            <button class="btn ghost cancel-btn" type="button">Cancel</button>
+          </div>
+        </section>
+
+        <p id="globalMessage" class="status-message" role="status" aria-live="polite"></p>
+      </main>
+    </div>
+  </body>
+</html>

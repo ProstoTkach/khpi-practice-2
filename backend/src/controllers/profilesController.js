@@ -1,8 +1,12 @@
 const profilesService = require("../services/profilesService");
+const { sanitizeString } = require("../utils/sanitize");
 
 function parseId(idParam) {
-  const id = Number.parseInt(idParam, 10);
-  return Number.isNaN(id) ? null : id;
+  if (!/^\d+$/.test(idParam)) {
+    return null;
+  }
+  const id = Number(idParam);
+  return Number.isInteger(id) ? id : null;
 }
 
 function validateCreatePayload(body) {
@@ -42,8 +46,8 @@ async function createProfile(req, res, next) {
 
     const payload = {
       user_id: Number(req.body.user_id),
-      bio: req.body.bio,
-      avatar_url: req.body.avatar_url
+      bio: req.body.bio !== undefined ? sanitizeString(req.body.bio) : undefined,
+      avatar_url: req.body.avatar_url !== undefined ? sanitizeString(req.body.avatar_url) : undefined
     };
 
     const profile = await profilesService.createProfile(payload);
@@ -94,8 +98,8 @@ async function updateProfile(req, res, next) {
 
     const payload = {
       ...(req.body.user_id !== undefined && { user_id: Number(req.body.user_id) }),
-      ...(req.body.bio !== undefined && { bio: req.body.bio }),
-      ...(req.body.avatar_url !== undefined && { avatar_url: req.body.avatar_url })
+      ...(req.body.bio !== undefined && { bio: sanitizeString(req.body.bio) }),
+      ...(req.body.avatar_url !== undefined && { avatar_url: sanitizeString(req.body.avatar_url) })
     };
 
     const profile = await profilesService.updateProfile(id, payload);

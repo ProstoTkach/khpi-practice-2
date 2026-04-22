@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delete User | UserFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body data-page="delete-user">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html">UserFlow</a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="index.html">Welcome</a>
+          <a href="create-user.html">Create user</a>
+          <a href="users.html">User list</a>
+          <a href="profile.html">Profile & scores</a>
+          <a href="edit-profile.html">Edit profile</a>
+          <a href="delete-user.html" class="active">Delete user</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <section class="card form-card danger-card">
+          <h1>Delete user</h1>
+          <p class="muted">This action cannot be undone.</p>
+
+          <form id="deleteUserForm" class="form-grid" novalidate>
+            <label for="deleteUserId">User ID</label>
+            <input id="deleteUserId" type="number" min="1" required />
+            <button type="submit" class="btn danger">Delete user</button>
+          </form>
+        </section>
+        <p id="globalMessage" class="status-message" role="status" aria-live="polite"></p>
+      </main>
+    </div>
+  </body>
+</html>
