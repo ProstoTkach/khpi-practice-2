@@ -9,6 +9,13 @@ const app = express();
 const PORT = Number(process.env.PORT || 3000);
 
 app.use(cors());
+app.disable("x-powered-by");
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  next();
+});
 
 app.use(express.json());
 
@@ -45,6 +52,10 @@ app.use((error, req, res, next) => {
   return res.status(500).json({ message: "Internal server error." });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

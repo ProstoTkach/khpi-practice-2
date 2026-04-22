@@ -1,7 +1,12 @@
 const { Sequelize } = require("sequelize");
 
+const isTestEnv = process.env.NODE_ENV === "test";
+const databaseName = isTestEnv
+  ? process.env.DB_NAME_TEST || process.env.DB_NAME || "registration_app_test"
+  : process.env.DB_NAME || "registration_app";
+
 const sequelize = new Sequelize(
-  process.env.DB_NAME || "registration_app",
+  databaseName,
   process.env.DB_USER || "postgres",
   process.env.DB_PASSWORD || "postgres",
   {

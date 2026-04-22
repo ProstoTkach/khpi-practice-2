@@ -1,4 +1,5 @@
 const usersService = require("../services/usersService");
+const { sanitizeString } = require("../utils/sanitize");
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_MIN_LENGTH = 8;
@@ -63,8 +64,11 @@ function validateUpdatePayload(body) {
 }
 
 function parseUserId(idParam) {
-  const userId = Number.parseInt(idParam, 10);
-  return Number.isNaN(userId) ? null : userId;
+  if (!/^\d+$/.test(idParam)) {
+    return null;
+  }
+  const userId = Number(idParam);
+  return Number.isInteger(userId) ? userId : null;
 }
 
 async function createUser(req, res, next) {
@@ -74,7 +78,14 @@ async function createUser(req, res, next) {
       return res.status(400).json({ message: "Validation failed", errors });
     }
 
-    const user = await usersService.createUser(req.body);
+    const payload = {
+      firstName: sanitizeString(req.body.firstName?.trim()),
+      lastName: sanitizeString(req.body.lastName?.trim()),
+      email: req.body.email?.trim(),
+      password: req.body.password
+    };
+
+    const user = await usersService.createUser(payload);
     return res.status(201).json(user);
   } catch (error) {
     return next(error);
@@ -121,8 +132,8 @@ async function updateUser(req, res, next) {
     }
 
     const payload = {
-      firstName: req.body.firstName?.trim(),
-      lastName: req.body.lastName?.trim(),
+      firstName: req.body.firstName !== undefined ? sanitizeString(req.body.firstName.trim()) : undefined,
+      lastName: req.body.lastName !== undefined ? sanitizeString(req.body.lastName.trim()) : undefined,
       email: req.body.email?.trim(),
       password: req.body.password
     };
